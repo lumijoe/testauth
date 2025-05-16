@@ -79,13 +79,11 @@
       document.addEventListener("click", function (event) {
         // クリック対象がフォームやオーバーレイ、または閉じるボタンなら無視
         const loginForm = document.getElementById("login-form");
-        const overlay = document.getElementById("overlay");
+        
+        if (loginForm.contains(event.target)) return;
 
-        if (loginForm.contains(event.target) || overlay.contains(event.target))
-          return;
-
-        loginForm.style.display = "block";
-        overlay.style.display = "block";
+        document.getElementById("login-form").style.display = "block";
+        document.getElementById("overlay").style.display = "block";
       });
 
       // ✕ボタンクリックで非表示にする
