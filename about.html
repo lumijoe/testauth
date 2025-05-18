@@ -7,7 +7,13 @@
 </head>
 <body>
     <h1>aboutページです</h1>
-    <button><a href="/index2.html">トップに戻る</a></button>
-    
+    <button><a href="/index.html">トップに戻る</a></button>
+    <script src="login1.js"></script>
+  <script>
+    if (sessionStorage.getItem("loggedIn") !== "true") {
+      alert("ログインしてください");
+      window.location.href = "index.html";
+    }
+  </script>
 </body>
 </html>
