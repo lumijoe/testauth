@@ -58,6 +58,13 @@
   </head>
   <body>
     <h1>どこかをクリックするとログインフォームが出ます</h1>
+    <h2>メニューです</h2>
+    <nav>
+      <ul>
+        <li><a href="/about.html">aboutページへ</a></li>
+        <li><a href="/compnay.html">companyページへ</a></li>
+      </ul>
+    </nav>
 
     <div id="overlay"></div>
 
@@ -75,12 +82,28 @@
     </div>
 
     <script>
-      // クリックでフォーム表示（何度でも）
+      // セッションストレージでログイン状態を管理
+      function isLoggedIn() {
+        return sessionStorage.getItem("loggedIn") === "true";
+      }
+      function setLoggedIn() {
+        sessionStorage.setItem("loggedIn", "true");
+      }
+
+      // 初回ロード時、ログイン済みならフォームもオーバーレイも非表示
+      window.addEventListener("DOMContentLoaded", function () {
+        if (isLoggedIn()) {
+          document.getElementById("login-form").style.display = "none";
+          document.getElementById("overlay").style.display = "none";
+        }
+      });
+
+      // クリックでフォーム表示（何度でも→ログイン済みなら出さない）
       document.addEventListener("click", function (event) {
-        // クリック対象がフォームやオーバーレイ、または閉じるボタンなら無視
         const loginForm = document.getElementById("login-form");
         const overlay = document.getElementById("overlay");
 
+        if (isLoggedIn()) return; // ログイン済みなら何もしない
         if (loginForm.contains(event.target) || overlay.contains(event.target))
           return;
 
@@ -101,6 +124,15 @@
       document.getElementById("overlay").addEventListener("click", function () {
         document.getElementById("login-form").style.display = "none";
         document.getElementById("overlay").style.display = "none";
+      });
+
+      // ログインフォーム送信時にセッションストレージへ保存
+      document.querySelector("#login-form form").addEventListener("submit", function (event) {
+        event.preventDefault();
+        setLoggedIn();
+        document.getElementById("login-form").style.display = "none";
+        document.getElementById("overlay").style.display = "none";
+        // 必要ならここでログイン後の処理を追加
       });
     </script>
   </body>
